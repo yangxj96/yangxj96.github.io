@@ -8,7 +8,8 @@
   "license": "MIT",
   "scripts": {
     "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs"
+    "docs:build": "vuepress build docs",
+    "docs:deploy": "D:\\Software\\Git\\bin\\bash.exe deploy.sh"
   },
   "devDependencies": {
     "vuepress": "^1.9.7"
