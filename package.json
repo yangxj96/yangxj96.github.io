@@ -12,6 +12,7 @@
     "docs:deploy": "D:\\Software\\Git\\bin\\bash.exe deploy.sh"
   },
   "devDependencies": {
+    "@vuepress/plugin-back-to-top": "^1.9.7",
     "vuepress": "^1.9.7"
   }
 }
