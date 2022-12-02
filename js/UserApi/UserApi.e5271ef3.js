@@ -1,0 +1,1 @@
+import{h as t}from"../../assets/index.64c2e314.js";const g={login(e,r){return t.post("/api/auth/login",{username:e,password:r})},getUserList(){return t.get("/api/user/getUserList")},getUserLogById(e){return t.get("/api/user/getUserLogById")}};export{g as U};

@@ -1,0 +1,1 @@
+import{J as a}from"../@vue/@vue.ac3d6910.js";const n=a({data(){return{table_data:[],pagination:{size:15,page:1,page_sizes:[10,50,100,150,300],default_page_size:10,total:1e3}}},methods:{handleSizeChange(e){console.log(`\u6BCF\u9875\u6570\u91CF: ${e}`)},handleCurrentChange(e){console.log(`\u5F53\u524D\u9875: ${e}`)}}});export{n as t};
