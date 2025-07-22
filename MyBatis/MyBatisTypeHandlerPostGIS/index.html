@@ -1,0 +1,808 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/null">
+  <link rel="icon" href="/null">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="道一">
+  <meta name="keywords" content="yangxj96,道一开源日记,道一">
+  
+    <meta name="description" content="0.项目环境0.1 build.gradle.kts文件重点如下12345678910111213141516171819repositories &amp;#123;    &#x2F;&#x2F; 第一步的,需要加入下面两个仓库,且需要放在最前面,因为有个依赖aliyun下载不下来    maven &amp;#123; url &#x3D; uri(&quot;https:&#x2F;&#x2F;repo.osgeo.org&#x2F;repository&#x2F;rele">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【MyBatis】MyBatis使用TypeHandle对Geometry进行操作">
+<meta property="og:url" content="https://www.yangxj96.com/MyBatis/MyBatisTypeHandlerPostGIS/">
+<meta property="og:site_name" content="道一开源日记">
+<meta property="og:description" content="0.项目环境0.1 build.gradle.kts文件重点如下12345678910111213141516171819repositories &amp;#123;    &#x2F;&#x2F; 第一步的,需要加入下面两个仓库,且需要放在最前面,因为有个依赖aliyun下载不下来    maven &amp;#123; url &#x3D; uri(&quot;https:&#x2F;&#x2F;repo.osgeo.org&#x2F;repository&#x2F;rele">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-11-02T13:17:32.000Z">
+<meta property="article:modified_time" content="2023-11-02T13:17:32.000Z">
+<meta property="article:author" content="道一">
+<meta property="article:tag" content="yangxj96,道一开源日记,道一">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
+  <title>【MyBatis】MyBatis使用TypeHandle对Geometry进行操作 - 道一开源日记</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"www.yangxj96.com","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+
+  
+<meta name="generator" content="Hexo 6.3.0"></head>
+
+
+<body>
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>道一的开源日记</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-pen"></i>
+                <span>我的开源</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/saas">
+                    <i class="iconfont icon-plan"></i>
+                    <span>通用SAAS平台</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/FOSS/nacos-server-pgsql.html">
+                    <i class="iconfont icon-plan"></i>
+                    <span>pgsql版nacos</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/FOSS/sentinel-dashboard.html">
+                    <i class="iconfont icon-plan"></i>
+                    <span>sentinel控制台</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" target="_self" href="javascript:;" role="button"
+                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="iconfont icon-bug"></i>
+                <span>微服务支撑</span>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/nacos">
+                    <i class="iconfont icon-plan"></i>
+                    <span>Nacos</span>
+                  </a>
+                
+                  
+                  
+                  
+                  <a class="dropdown-item" href="/rabbitmq">
+                    <i class="iconfont icon-plan"></i>
+                    <span>RabbitMQ</span>
+                  </a>
+                
+              </div>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/links/">
+                <i class="iconfont icon-link-fill"></i>
+                <span>友链</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/images/default.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="【MyBatis】MyBatis使用TypeHandle对Geometry进行操作"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        道一
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2023-11-02 21:17" pubdate>
+          2023年11月2日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          4.3k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          36 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">【MyBatis】MyBatis使用TypeHandle对Geometry进行操作</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h1 id="0-项目环境"><a href="#0-项目环境" class="headerlink" title="0.项目环境"></a>0.项目环境</h1><h2 id="0-1-build-gradle-kts文件重点如下"><a href="#0-1-build-gradle-kts文件重点如下" class="headerlink" title="0.1 build.gradle.kts文件重点如下"></a>0.1 build.gradle.kts文件重点如下</h2><figure class="highlight kotlin"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs kotlin">repositories &#123;<br>    <span class="hljs-comment">// 第一步的,需要加入下面两个仓库,且需要放在最前面,因为有个依赖aliyun下载不下来</span><br>    maven &#123; url = uri(<span class="hljs-string">&quot;https://repo.osgeo.org/repository/release/&quot;</span>) &#125;<br>    maven &#123; url = uri(<span class="hljs-string">&quot;https://repo.osgeo.org/repository/snapshot/&quot;</span>) &#125;<br>    maven &#123; url = uri(<span class="hljs-string">&quot;https://maven.aliyun.com/repository/public/&quot;</span>) &#125;<br>    mavenCentral()<br>&#125;<br><br>dependencies &#123;<br>    <span class="hljs-comment">// 数据库相关用到的依赖如下</span><br>    implementation(<span class="hljs-string">&quot;com.baomidou:mybatis-plus-boot-starter:3.5.4&quot;</span>)<br>    implementation(<span class="hljs-string">&quot;org.jetbrains:annotations:24.0.0&quot;</span>)<br>    runtimeOnly(<span class="hljs-string">&quot;org.postgresql:postgresql&quot;</span>)<br>    <span class="hljs-comment">// geom工具类</span><br>    implementation(<span class="hljs-string">&quot;net.postgis:postgis-jdbc:2021.1.0&quot;</span>)<br>    implementation(<span class="hljs-string">&quot;org.geotools:gt-geometry:24.7&quot;</span>)<br>    implementation(<span class="hljs-string">&quot;org.geotools:gt-geojson:24.7&quot;</span>)<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<h1 id="1-实现一个自己的BaseTypeHandler"><a href="#1-实现一个自己的BaseTypeHandler" class="headerlink" title="1.实现一个自己的BaseTypeHandler"></a>1.实现一个自己的BaseTypeHandler</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br></pre></td><td class="code"><pre><code class="hljs java"><br><span class="hljs-keyword">package</span> com.kmlpkj.smart.village.api.configuration.mybatis.handler<br><br><span class="hljs-keyword">import</span> cn.hutool.extra.spring.SpringUtil<br><span class="hljs-keyword">import</span> com.fasterxml.jackson.databind.ObjectMapper<br><span class="hljs-keyword">import</span> org.apache.ibatis.type.BaseTypeHandler<br><span class="hljs-keyword">import</span> org.apache.ibatis.type.JdbcType<br><span class="hljs-keyword">import</span> org.geotools.geojson.geom.GeometryJSON<br><span class="hljs-keyword">import</span> org.locationtech.jts.io.ByteOrderValues<br><span class="hljs-keyword">import</span> org.locationtech.jts.io.WKBReader<br><span class="hljs-keyword">import</span> org.locationtech.jts.io.WKBWriter<br><span class="hljs-keyword">import</span> org.postgresql.util.PGobject<br><span class="hljs-keyword">import</span> org.slf4j.LoggerFactory<br><span class="hljs-keyword">import</span> java.sql.CallableStatement<br><span class="hljs-keyword">import</span> java.sql.PreparedStatement<br><span class="hljs-keyword">import</span> java.sql.ResultSet<br><br><br><span class="hljs-comment">/**</span><br><span class="hljs-comment"> * Geom字段格式化处理</span><br><span class="hljs-comment"> */</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">GeomTypeHandler</span> : BaseTypeHandler&lt;Any&gt;() &#123;<br><br>    companion object &#123;<br>        <span class="hljs-keyword">private</span> <span class="hljs-type">val</span> <span class="hljs-variable">log</span> <span class="hljs-operator">=</span> LoggerFactory.getLogger(<span class="hljs-built_in">this</span>::class.java)<br>    &#125;<br><br>    override fun <span class="hljs-title function_">getNullableResult</span><span class="hljs-params">(rs: ResultSet?, columnName: String?)</span>: Any? &#123;<br>        rs?.getString(columnName)?.let &#123;<br>            <span class="hljs-keyword">return</span> convert(it)<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span><br>    &#125;<br><br>    override fun <span class="hljs-title function_">getNullableResult</span><span class="hljs-params">(rs: ResultSet?, columnIndex: Int)</span>: Any? &#123;<br>        rs?.getString(columnIndex)?.let &#123;<br>            <span class="hljs-keyword">return</span> convert(it)<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span><br>    &#125;<br><br>    override fun <span class="hljs-title function_">getNullableResult</span><span class="hljs-params">(cs: CallableStatement?, columnIndex: Int)</span>: Any? &#123;<br>         cs?.getString(columnIndex)?.let &#123;<br>            <span class="hljs-keyword">return</span> convert(it)<br>        &#125;<br>        <span class="hljs-keyword">return</span> <span class="hljs-literal">null</span><br>    &#125;<br><br>    override fun <span class="hljs-title function_">setNonNullParameter</span><span class="hljs-params">(ps: PreparedStatement?, i: Int, parameter: Any?, jdbcType: JdbcType?)</span> &#123;<br>        <span class="hljs-type">val</span> <span class="hljs-variable">om</span> <span class="hljs-operator">=</span> SpringUtil.getBean(ObjectMapper::class.java)<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-type">val</span> <span class="hljs-variable">geom</span> <span class="hljs-operator">=</span> GeometryJSON(<span class="hljs-number">10</span>).read(om.readTree(parameter.toString()).toPrettyString())<br>            geom.srid = <span class="hljs-number">4490</span><br>            <span class="hljs-type">val</span> <span class="hljs-variable">writer</span> <span class="hljs-operator">=</span> WKBWriter(<span class="hljs-number">2</span>, ByteOrderValues.BIG_ENDIAN, <span class="hljs-literal">true</span>)<br>            <span class="hljs-type">val</span> <span class="hljs-variable">bytes</span> <span class="hljs-operator">=</span> writer.write(geom)<br>            <span class="hljs-type">val</span> <span class="hljs-variable">s1</span> <span class="hljs-operator">=</span> WKBWriter.toHex(bytes)<br>            ps?.setObject(i, PGobject().also &#123;<br>                it.type = <span class="hljs-string">&quot;geometry&quot;</span><br>                it.value = s1<br>            &#125;)<br>        &#125; <span class="hljs-keyword">catch</span> (e: Exception) &#123;<br>            e.printStackTrace()<br>            <span class="hljs-keyword">throw</span> RuntimeException(<span class="hljs-string">&quot;转换geom字段失败&quot;</span>)<br>        &#125;<br>    &#125;<br><br>    <span class="hljs-keyword">private</span> fun <span class="hljs-title function_">convert</span><span class="hljs-params">(wkb: String)</span>: Any &#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>            <span class="hljs-type">val</span> <span class="hljs-variable">geom</span> <span class="hljs-operator">=</span> WKBReader().read(WKBReader.hexToBytes(wkb))<br>            <span class="hljs-type">val</span> <span class="hljs-variable">str</span> <span class="hljs-operator">=</span> GeometryJSON(<span class="hljs-number">10</span>).toString(geom)<br>            <span class="hljs-keyword">return</span> SpringUtil.getBean(ObjectMapper::class.java).readTree(str)<br>        &#125; <span class="hljs-keyword">catch</span> (e: Exception) &#123;<br>            e.printStackTrace()<br>            <span class="hljs-keyword">throw</span> RuntimeException(<span class="hljs-string">&quot;转换geom字段失败&quot;</span>)<br>        &#125;<br>    &#125;<br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<h1 id="2-在对应的实体上加入TypeHandler"><a href="#2-在对应的实体上加入TypeHandler" class="headerlink" title="2.在对应的实体上加入TypeHandler"></a>2.在对应的实体上加入TypeHandler</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs java"><br><span class="hljs-comment">// 第一 需要在@TableName注解中启用autoResultMap = true</span><br><span class="hljs-comment">// 第二 需要在@TableField注解中指定typeHandler</span><br><br><span class="hljs-meta">@TableName(value = &quot;xx&quot;, autoResultMap = true)</span><br><span class="hljs-keyword">class</span> <span class="hljs-title class_">Grid</span> &#123;<br>    <span class="hljs-meta">@TableField(value = &quot;geom&quot;, typeHandler = GeomTypeHandler::class)</span><br>    <span class="hljs-keyword">var</span> geom: Any? = <span class="hljs-literal">null</span><br>&#125;<br><br></code></pre></td></tr></table></figure>
+
+<h1 id="3-在对于Mapper中指定TypeHandler"><a href="#3-在对于Mapper中指定TypeHandler" class="headerlink" title="3.在对于Mapper中指定TypeHandler"></a>3.在对于Mapper中指定TypeHandler</h1><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs xml"><span class="hljs-meta">&lt;?xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span>?&gt;</span><br><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-keyword">mapper</span> <span class="hljs-keyword">PUBLIC</span> <span class="hljs-string">&quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;</span> <span class="hljs-string">&quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;</span>&gt;</span><br><span class="hljs-tag">&lt;<span class="hljs-name">mapper</span> <span class="hljs-attr">namespace</span>=<span class="hljs-string">&quot;com.kmlpkj.smart.village.api.mapper.GridMapper&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">resultMap</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;BaseResultMap&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;xxx&quot;</span>&gt;</span><br>        <span class="hljs-comment">&lt;!-- 在typeHandler中指定我们的文件,这里是不是必须得我没尝试,但是我都加上了 --&gt;</span><br>        <span class="hljs-tag">&lt;<span class="hljs-name">result</span> <span class="hljs-attr">column</span>=<span class="hljs-string">&quot;geom&quot;</span> <span class="hljs-attr">jdbcType</span>=<span class="hljs-string">&quot;OTHER&quot;</span> <span class="hljs-attr">property</span>=<span class="hljs-string">&quot;geom&quot;</span> <span class="hljs-attr">typeHandler</span>=<span class="hljs-string">&quot;xxx.GeomTypeHandler&quot;</span>/&gt;</span><br>    <span class="hljs-tag">&lt;/<span class="hljs-name">resultMap</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">mapper</span>&gt;</span><br><br></code></pre></td></tr></table></figure>
+
+<h1 id="4-对应的格式说明"><a href="#4-对应的格式说明" class="headerlink" title="4.对应的格式说明"></a>4.对应的格式说明</h1><h2 id="4-1-入参格式"><a href="#4-1-入参格式" class="headerlink" title="4.1 入参格式"></a>4.1 入参格式</h2><p>入参格式如下,只需要传GeoJSON格式中的具体的geometry字段的内容即可</p>
+<p>格式内容支持:Point, LineString, Polygon, MultiPoint, MultiLineString, MultiPolygon和GeometryCollection</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Polygon&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;coordinates&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>    <span class="hljs-punctuation">[</span><br>      <span class="hljs-punctuation">[</span><br>        <span class="hljs-number">104.03273502416919</span><span class="hljs-punctuation">,</span><br>        <span class="hljs-number">23.810639861962807</span><br>      <span class="hljs-punctuation">]</span><br>    <span class="hljs-punctuation">]</span><br>  <span class="hljs-punctuation">]</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+<h2 id="4-2-应用后查询格式说明"><a href="#4-2-应用后查询格式说明" class="headerlink" title="4.2 应用后查询格式说明"></a>4.2 应用后查询格式说明</h2><p>查询后的格式如下</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;geom&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;type&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Polygon&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;coordinates&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>      <span class="hljs-punctuation">[</span><br>        <span class="hljs-punctuation">[</span><br>          <span class="hljs-number">105.3362898252</span><span class="hljs-punctuation">,</span><br>          <span class="hljs-number">23.8315432677</span><br>        <span class="hljs-punctuation">]</span><br>      <span class="hljs-punctuation">]</span><br>    <span class="hljs-punctuation">]</span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
+
+
+
+
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/MyBatis/" class="category-chain-item">MyBatis</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+</div>
+
+
+              
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>【MyBatis】MyBatis使用TypeHandle对Geometry进行操作</div>
+      <div>https://www.yangxj96.com/MyBatis/MyBatisTypeHandlerPostGIS/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>道一</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2023年11月2日</div>
+        </div>
+      
+      
+      
+        <div class="license-meta-item">
+          <div>许可协议</div>
+          <div>
+            
+              
+              
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                  <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                    <i class="iconfont icon-by"></i>
+                  </span>
+                </a>
+              
+            
+          </div>
+        </div>
+      
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/Spring/SpringCustomGenericJackson2JsonRedisSerializerMapper/" title="【Spring】定制GenericJackson2JsonRedisSerializer的mapper">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">【Spring】定制GenericJackson2JsonRedisSerializer的mapper</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/Docker/DockerMinioPermissionDenied/" title="【Docker】Linux中Docker下Minio启动提示权限不足">
+                        <span class="hidden-mobile">【Docker】Linux中Docker下Minio启动提示权限不足</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  <script>
+  Fluid.utils.createScript('https://lib.baomitu.com/mermaid/8.14.0/mermaid.min.js', function() {
+    mermaid.initialize({"theme":"default"});
+
+    Fluid.utils.listenDOMLoaded(function() {
+      Fluid.events.registerRefreshCallback(function() {
+        if ('mermaid' in window) {
+          mermaid.init();
+        }
+      });
+    });
+  });
+</script>
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
+  
+</div>
+
+  
+  
+    <!-- 备案信息 ICP for China -->
+    <div class="beian">
+  <span>
+    <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow noopener">
+      滇ICP备2023006063号-1
+    </a>
+  </span>
+  
+    
+      <span>
+        <a
+          href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=53011202001306"
+          rel="nofollow noopener"
+          class="beian-police"
+          target="_blank"
+        >
+          
+            <span style="visibility: hidden; width: 0">|</span>
+            <img src="/images/police_beian.png" srcset="/img/loading.gif" lazyload alt="police-icon"/>
+          
+          <span>滇公网安备 53011202001306号</span>
+        </a>
+      </span>
+    
+  
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+</body>
+</html>
