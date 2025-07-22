@@ -1,1 +1,0 @@
-import{a as o}from"../vue-router/vue-router.K23cJQPm.js";import{d as a,b as r,i as s,o as n,c as i,R as u}from"../@vue/@vue.I-RMNdSZ.js";const f=a({__name:"register",setup(c){const t=o(),e=r("租户注册");return s(()=>{t.query.id&&(e.value="租户详情")}),(l,p)=>(n(),i("div",null,u(e.value),1))}});export{f as default};
