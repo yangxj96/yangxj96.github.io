@@ -8,7 +8,7 @@ subtitle: "道可道,非常道也;名可名,非常名也;"
 description: ""
 keywords:
 author: yangxj96
-language: zh
+language: zh-CN
 timezone: "Asia/Shanghai"
 
 # URL
@@ -96,7 +96,7 @@ ignore:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: landscape
+theme: fluid
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
