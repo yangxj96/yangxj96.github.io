@@ -4,53 +4,41 @@
 
 # 用于浏览器标签的图标
 favicon:
-
 # 用于苹果设备的图标
 apple_touch_icon:
-
 # 浏览器标签页中的标题分隔符，效果：文章名 - 站点名
 tab_title_separator: " - "
-
 # 强制所有链接升级为 HTTPS（适用于图片等资源出现 HTTP 混入报错）
 force_https: true
-
 # 代码块的增强配置
 code:
   # 是否开启复制代码的按钮
   copy_btn: true
-
   # 代码语言
   language:
     enable: true
     default: "TEXT"
-
   # 代码高亮
   highlight:
     enable: true
-
     # 代码块是否显示行号
     line_number: true
-
     # 实现高亮的库，对应下面的设置
     # Options: highlightjs | prismjs
     lib: "prismjs"
-
     highlightjs:
       # 在链接中挑选 style 填入
       # See: https://highlightjs.org/demo/
       style: "github gist"
       style_dark: "dark"
-
     prismjs:
       # 在下方链接页面右侧的圆形按钮挑选 style 填入，也可以直接填入 css 链接
       # See: https://prismjs.com/
       style: "default"
       style_dark: "tomorrow night"
-
       # 设为 true 高亮将本地静态生成（但只支持部分 prismjs 插件），
       # 设为 false 高亮将在浏览器通过 js 生成
       preprocess: true
-
 # 一些好玩的功能
 fun_features:
   # 为 subtitle 添加打字机效果
@@ -153,7 +141,6 @@ font:
   font_family:
   letter_spacing: 0.02em
   code_font_size: 85%
-
 # 指定自定义 .js 文件路径，支持列表；
 # 路径是相对 source 目录，如 /js/custom.js 对应存放目录 source/js/custom.js
 custom_js:
@@ -188,7 +175,6 @@ web_analytics:
     path: window.location.pathname
     # 开启后不统计本地路径( localhost 与 127.0.0.1 )
     ignore_local: false
-
   # Umami Analytics，仅支持自部署。如果要展示 PV UV 需要填写所有配置项，
   # 否则只填写 `src` 和 `website_id` 即可
   # See: https://umami.is/docs
@@ -244,11 +230,11 @@ navbar:
   # 如不存在关联则显示key本身的值；icon是 css class，可以省略；增加 name 可以强制显示指定名称
   menu:
     - { key: "home", link: "/", icon: "iconfont icon-home-fill" }
-    - { key: "archive", link: "/archives/", icon: "iconfont icon-archive-fill" }
+    #- { key: "archive", link: "/archives/", icon: "iconfont icon-archive-fill" }
     - { key: "category", link: "/categories/", icon: "iconfont icon-category-fill" }
-    - { key: "tag", link: "/tags/", icon: "iconfont icon-tags-fill" }
+    #- { key: "tag", link: "/tags/", icon: "iconfont icon-tags-fill" }
     - { key: "about", link: "/about/", icon: "iconfont icon-user-fill" }
-    #- { key: "links", link: "/links/", icon: "iconfont icon-link-fill" }
+    - { key: "links", link: "/links/", icon: "iconfont icon-link-fill" }
 
 # 搜索功能，基于 hexo-generator-search 插件，若已安装其他搜索插件请关闭此功能，以避免生成多余的索引文件
 search:
@@ -689,14 +675,14 @@ about:
   banner_img: /img/default.png
   banner_img_height: 60
   banner_mask_alpha: 0.3
-  avatar: /img/avatar.png
-  name: "Fluid"
-  intro: "An elegant theme for Hexo"
-  # 更多图标可从 https://hexo.fluid-dev.com/docs/icon/ 查找，`class` 代表图标的 css class，添加 `qrcode` 后，图标不再是链接而是悬浮二维码
+  avatar: /images/links_avatar_yangxj96.jpg
+  name: "道一哥哥"
+  intro: "道可道,非常道也;名可名,非常名也;"
+  # 更多图标可从 https://hexo.fluid-dev.com/docs/icon/ 查找，
+  # `class` 代表图标的 css class，添加 `qrcode` 后，图标不再是链接而是悬浮二维码
   icons:
-    - { class: "iconfont icon-github-fill", link: "https://github.com", tip: "GitHub" }
-    - { class: "iconfont icon-douban-fill", link: "https://douban.com", tip: "豆瓣" }
-    - { class: "iconfont icon-wechat-fill", qrcode: "/img/favicon.png" }
+    - { class: "iconfont icon-github-fill", link: "https://github.com/yangxj96", tip: "GitHub" }
+    - { class: "iconfont icon-wechat-fill", qrcode: "/images/wechat-pay.jpg" }
 
 #---------------------------
 # 自定义页
@@ -729,10 +715,16 @@ links:
   # 友链的成员项
   items:
     - {
-      title: "Fluid Blog",
-      intro: "主题博客",
-      link: "https://hexo.fluid-dev.com/",
-      avatar: "/img/favicon.png"
+      title: "道一哥哥",
+      intro: "CSDN",
+      link: "https://blog.csdn.net/qq_37274323",
+      avatar: "/images/links_avatar_yangxj96.jpg"
+    }
+    - {
+      title: "心随梦舞-祥",
+      intro: "CSDN",
+      link: "https://blog.csdn.net/weixin_42139418",
+      avatar: "/images/links_avatar_wuxiang.jpg"
     }
   # 当成员头像加载失败时，替换为指定图片
   onerror_avatar: /img/avatar.png
