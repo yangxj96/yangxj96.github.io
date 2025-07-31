@@ -230,7 +230,7 @@ navbar:
   # 如不存在关联则显示key本身的值；icon是 css class，可以省略；增加 name 可以强制显示指定名称
   menu:
     - { key: "home", link: "/", icon: "iconfont icon-home-fill" }
-    #- { key: "archive", link: "/archives/", icon: "iconfont icon-archive-fill" }
+    - { key: "archive", link: "/archives/", icon: "iconfont icon-archive-fill" }
     - { key: "category", link: "/categories/", icon: "iconfont icon-category-fill" }
     #- { key: "tag", link: "/tags/", icon: "iconfont icon-tags-fill" }
     - { key: "about", link: "/about/", icon: "iconfont icon-user-fill" }
@@ -391,7 +391,7 @@ post:
   # 在文章开头显示文章更新时间，该时间默认是 md 文件更新时间，
   # 可通过 front-matter 中 `updated` 手动指定（和 date 一样格式）
   updated:
-    enable: false
+    enable: true
     # 格式参照 ISO-8601 日期格式化
     # See: http://momentjs.cn/docs/#/parsing/string-format/
     date_format: "LL a"
@@ -411,7 +411,7 @@ post:
     placement: left
     # 文章的排序字段，前面带减号是倒序，不带减号是正序
     # Options: date | title | or other field of front-matter
-    post_order_by: "title"
+    post_order_by: "date"
     # 单个分类中折叠展示文章数的最大值，超过限制会显示 More，0 则不限制
     post_limit: 0
   # 侧边栏展示文章目录
@@ -483,146 +483,6 @@ post:
   # 评论插件
   comments:
     enable: false
-    # 指定的插件，需要同时设置对应插件的必要参数
-    # Options: utterances | disqus | gitalk | valine | waline | changyan
-    #   livere | remark42 | twikoo | cusdis | giscus | discuss
-    type: disqus
-
-#---------------------------
-# 评论插件
-# 开启评论需要先设置上方 `post: comments: enable: true`，
-# 然后根据 `type` 设置下方对应的评论插件参数
-#---------------------------
-
-# Utterances
-# 基于 GitHub Issues
-# See: https://utteranc.es
-utterances:
-  repo:
-  issue_term: pathname
-  label: utterances
-  theme: github-light
-  theme_dark: github-dark
-
-# Disqus
-# 基于第三方的服务，国内用户直接使用容易被墙，建议配合 Disqusjs
-# See: https://disqus.com
-disqus:
-  shortname:
-  # 以下为 Disqusjs 支持, 国内用户如果想使用 Disqus 建议配合使用
-  # See: https://github.com/SukkaW/DisqusJS
-  disqusjs: false
-  apikey:
-# Gitalk
-# 基于 GitHub Issues
-# See: https://github.com/gitalk/gitalk#options
-gitalk:
-  clientID:
-  clientSecret:
-  repo:
-  owner:
-  admin: ['name']
-  language: zh-CN
-  labels: ['Gitalk']
-  perPage: 10
-  pagerDirection: last
-  distractionFreeMode: false
-  createIssueManually: true
-  # 默认 proxy 可能会失效，解决方法请见下方链接
-  # https://github.com/gitalk/gitalk/issues/429
-  # https://github.com/Zibri/cloudflare-cors-anywhere
-  proxy: https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token
-
-# Valine
-# 基于 LeanCloud
-# See: https://valine.js.org/
-valine:
-  appId:
-  appKey:
-  path: window.location.pathname
-  placeholder:
-  avatar: 'retro'
-  meta: ['nick', 'mail', 'link']
-  requiredFields: []
-  pageSize: 10
-  lang: 'zh-CN'
-  highlight: false
-  recordIP: false
-  serverURLs: ''
-  emojiCDN:
-  emojiMaps:
-  enableQQ: false
-
-# Waline
-# 从 Valine 衍生而来，额外增加了服务端和多种功能
-# See: https://waline.js.org/
-waline:
-  serverURL: ''
-  path: window.location.pathname
-  meta: ['nick', 'mail', 'link']
-  requiredMeta: ['nick']
-  lang: 'zh-CN'
-  emoji: ['https://cdn.jsdelivr.net/gh/walinejs/emojis/weibo']
-  dark: 'html[data-user-color-scheme="dark"]'
-  wordLimit: 0
-  pageSize: 10
-
-# 畅言 Changyan
-# 基于第三方的服务
-# http://changyan.kuaizhan.com
-changyan:
-  appid: ''
-  appkey: ''
-# 来必力 Livere
-# 基于第三方的服务
-# See: https://www.livere.com
-livere:
-  uid: ''
-# Remark42
-# 需要自托管服务端
-# See: https://remark42.com
-remark42:
-  host:
-  site_id:
-  max_shown_comments: 10
-  locale: zh
-  components: ['embed']
-# Twikoo
-# 支持腾讯云、Vercel、Railway 等多种平台部署
-# See: https://twikoo.js.org
-twikoo:
-  envId:
-  region: ap-shanghai
-  path: window.location.pathname
-# Cusdis
-# 基于第三方服务或自托管服务
-# See https://cusdis.com
-cusdis:
-  host:
-  app_id:
-  lang: zh-cn
-# Giscus
-# 基于 GitHub Discussions，类似于 Utterances
-# See: https://giscus.app/
-giscus:
-  repo:
-  repo-id:
-  category:
-  category-id:
-  theme-light: light
-  theme-dark: dark
-  mapping: pathname
-  reactions-enabled: 1
-  emit-metadata: 0
-  input-position: top
-  lang: zh-CN
-# Discuss
-# 多平台、多数据库、自托管、免费开源评论系统
-# See: https://discuss.js.org
-discuss:
-  serverURLs:
-  path: window.location.pathname
-
 
 #---------------------------
 # 归档页
