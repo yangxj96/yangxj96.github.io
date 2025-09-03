@@ -291,13 +291,13 @@ footer:
     source: "busuanzi"
   # 国内大陆服务器的备案信息
   beian:
-    enable: true
+    enable: false
     # ICP证号
-    icp_text: 滇ICP备2023006063号-1
+    icp_text:
     # 公安备案号，不填则只显示ICP
-    police_text: 滇公网安备 53011202001306号
+    police_text:
     # 公安备案的编号，用于URL跳转查询
-    police_code: 53011202001306
+    police_code:
     # 公安备案的图片. 为空时不显示备案图片
     police_icon: /img/police_beian.png
 
