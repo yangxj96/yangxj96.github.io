@@ -308,13 +308,6 @@
   </url>
   
   <url>
-    <loc>https://yangxj96.github.io/categories/java/</loc>
-    <lastmod>2025-09-16</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.2</priority>
-  </url>
-  
-  <url>
     <loc>https://yangxj96.github.io/categories/android/</loc>
     <lastmod>2025-09-16</lastmod>
     <changefreq>weekly</changefreq>
@@ -337,6 +330,13 @@
   
   <url>
     <loc>https://yangxj96.github.io/categories/OPS/</loc>
+    <lastmod>2025-09-16</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.2</priority>
+  </url>
+  
+  <url>
+    <loc>https://yangxj96.github.io/categories/java/</loc>
     <lastmod>2025-09-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.2</priority>
