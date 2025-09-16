@@ -13,7 +13,7 @@ timezone: "Asia/Shanghai"
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-url: https://blog.yangxj96.com
+url: https://yangxj96.github.io
 # 备份 permalink: :year/:month/:day/:title/
 permalink: :year/:month/:title/
 permalink_defaults:
@@ -97,6 +97,12 @@ ignore:
 
 # Extensions
 ## Plugins: https://hexo.io/plugins/
+Plugins:
+  - hexo-generator-sitemap
+
+sitemap:
+  path: sitemap.xml
+
 ## Themes: https://hexo.io/themes/
 theme: fluid
 # Deployment
