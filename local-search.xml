@@ -289,25 +289,6 @@
   
   
   <entry>
-    <title>CentOS Liunx 7 下安装java jdk</title>
-    <link href="/2022/12/linux/b003/"/>
-    <url>/2022/12/linux/b003/</url>
-    
-    <content type="html"><![CDATA[<h3 id="1-下载jdk"><a href="#1-下载jdk" class="headerlink" title="1.下载jdk"></a>1.下载jdk</h3><p>下载传送门:<a href="https://download.csdn.net/download/weightman2008/10553450">jdk8</a></p><blockquote><p>不是我的资源,如果觉得太贵可以在别的地方找<br>本来我想上传一个liunx和windows两个放一起,不过超过了csdn上传文件的大小限制,单独上传liunx发现已经有资源了.</p></blockquote><h3 id="2-上传到liunx主机"><a href="#2-上传到liunx主机" class="headerlink" title="2.上传到liunx主机"></a>2.上传到liunx主机</h3><blockquote><p>推荐路径 &#x2F;usr&#x2F;local&#x2F;java<br>因为可能安装好几个版本的jdk 所以新建了个java目录</p></blockquote><p><img src="/images/blog/linux/b-2-1.png" alt="在这里插入图片描述"></p><h3 id="3-解压tar包并且重命名-重命名不是必须的"><a href="#3-解压tar包并且重命名-重命名不是必须的" class="headerlink" title="3.解压tar包并且重命名(重命名不是必须的)"></a>3.解压tar包并且重命名(重命名不是必须的)</h3><blockquote><p>解压命令 tar -zxvf jdk-8u181-linux-x64.tar.gz<br>重命名命令  mv jdk1.8.0_181&#x2F; jdk8</p></blockquote><h3 id="4-添加环境变量"><a href="#4-添加环境变量" class="headerlink" title="4.添加环境变量"></a>4.添加环境变量</h3><ol><li>vim &#x2F;etc&#x2F;profile 打开profile文件</li><li>添加环境变量</li></ol><figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token assign-left variable">JAVA_HOME</span><span class="token operator">=</span>/usr/local/java/jdk8 <span class="token punctuation">(</span>注:替换成你的路径 其他不变<span class="token punctuation">)</span><span class="token assign-left variable">JRE_HOME</span><span class="token operator">=</span><span class="token variable">$JAVA_HOME</span>/jre<span class="token assign-left variable"><span class="token environment constant">PATH</span></span><span class="token operator">=</span><span class="token environment constant">$PATH</span><span class="token builtin class-name">:</span><span class="token variable">$JAVA_HOME</span>/bin<span class="token assign-left variable">CLASSPATH</span><span class="token operator">=</span>.:<span class="token variable">$JAVA_HOME</span>/lib/dt.jar:<span class="token variable">$JAVA_HOME</span>/lib/tools.jar<span class="token builtin class-name">export</span> JAVA_HOME<span class="token builtin class-name">export</span> JRE_HOME<span class="token builtin class-name">export</span> <span class="token environment constant">PATH</span><span class="token builtin class-name">export</span> CLASSPATH<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure><p><img src="/images/blog/linux/b-2-2.png" alt="在这里插入图片描述"><br>3. 刷新环境变量  (source &#x2F;etc&#x2F;profile)</p><h3 id="5-验证"><a href="#5-验证" class="headerlink" title="5.验证"></a>5.验证</h3><blockquote><p>验证命令 java -version<br>输出版本信息则配置成功</p></blockquote><p><img src="/images/blog/linux/b-2-3.png" alt="在这里插入图片描述"></p>]]></content>
-    
-    
-    <categories>
-      
-      <category>linux</category>
-      
-    </categories>
-    
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>Docker docker-compose cp cannot create regular file ‘xxxxx‘ Permission denied</title>
     <link href="/2022/12/ops/b002/"/>
     <url>/2022/12/ops/b002/</url>
@@ -318,6 +299,25 @@
     <categories>
       
       <category>OPS</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>CentOS Liunx 7 下安装java jdk</title>
+    <link href="/2022/12/linux/b003/"/>
+    <url>/2022/12/linux/b003/</url>
+    
+    <content type="html"><![CDATA[<h3 id="1-下载jdk"><a href="#1-下载jdk" class="headerlink" title="1.下载jdk"></a>1.下载jdk</h3><p>下载传送门:<a href="https://download.csdn.net/download/weightman2008/10553450">jdk8</a></p><blockquote><p>不是我的资源,如果觉得太贵可以在别的地方找<br>本来我想上传一个liunx和windows两个放一起,不过超过了csdn上传文件的大小限制,单独上传liunx发现已经有资源了.</p></blockquote><h3 id="2-上传到liunx主机"><a href="#2-上传到liunx主机" class="headerlink" title="2.上传到liunx主机"></a>2.上传到liunx主机</h3><blockquote><p>推荐路径 &#x2F;usr&#x2F;local&#x2F;java<br>因为可能安装好几个版本的jdk 所以新建了个java目录</p></blockquote><p><img src="/images/blog/linux/b-2-1.png" alt="在这里插入图片描述"></p><h3 id="3-解压tar包并且重命名-重命名不是必须的"><a href="#3-解压tar包并且重命名-重命名不是必须的" class="headerlink" title="3.解压tar包并且重命名(重命名不是必须的)"></a>3.解压tar包并且重命名(重命名不是必须的)</h3><blockquote><p>解压命令 tar -zxvf jdk-8u181-linux-x64.tar.gz<br>重命名命令  mv jdk1.8.0_181&#x2F; jdk8</p></blockquote><h3 id="4-添加环境变量"><a href="#4-添加环境变量" class="headerlink" title="4.添加环境变量"></a>4.添加环境变量</h3><ol><li>vim &#x2F;etc&#x2F;profile 打开profile文件</li><li>添加环境变量</li></ol><figure><div class="code-wrapper"><pre class="line-numbers language-bash" data-language="bash"><code class="language-bash"><span class="token assign-left variable">JAVA_HOME</span><span class="token operator">=</span>/usr/local/java/jdk8 <span class="token punctuation">(</span>注:替换成你的路径 其他不变<span class="token punctuation">)</span><span class="token assign-left variable">JRE_HOME</span><span class="token operator">=</span><span class="token variable">$JAVA_HOME</span>/jre<span class="token assign-left variable"><span class="token environment constant">PATH</span></span><span class="token operator">=</span><span class="token environment constant">$PATH</span><span class="token builtin class-name">:</span><span class="token variable">$JAVA_HOME</span>/bin<span class="token assign-left variable">CLASSPATH</span><span class="token operator">=</span>.:<span class="token variable">$JAVA_HOME</span>/lib/dt.jar:<span class="token variable">$JAVA_HOME</span>/lib/tools.jar<span class="token builtin class-name">export</span> JAVA_HOME<span class="token builtin class-name">export</span> JRE_HOME<span class="token builtin class-name">export</span> <span class="token environment constant">PATH</span><span class="token builtin class-name">export</span> CLASSPATH<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre></div></figure><p><img src="/images/blog/linux/b-2-2.png" alt="在这里插入图片描述"><br>3. 刷新环境变量  (source &#x2F;etc&#x2F;profile)</p><h3 id="5-验证"><a href="#5-验证" class="headerlink" title="5.验证"></a>5.验证</h3><blockquote><p>验证命令 java -version<br>输出版本信息则配置成功</p></blockquote><p><img src="/images/blog/linux/b-2-3.png" alt="在这里插入图片描述"></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>linux</category>
       
     </categories>
     
