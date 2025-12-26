@@ -308,25 +308,6 @@
   
   
   <entry>
-    <title>Docker docker-compose cp cannot create regular file ‘xxxxx‘ Permission denied</title>
-    <link href="/2022/12/ops/b002/"/>
-    <url>/2022/12/ops/b002/</url>
-    
-    <content type="html"><![CDATA[<h3 id="1-问题原因"><a href="#1-问题原因" class="headerlink" title="1.问题原因"></a>1.问题原因</h3><blockquote><p>需要创建和本机的映射路径,导致权限不足</p></blockquote><p><img src="/images/blog/ops/b-1-1.png" alt="在这里插入图片描述"></p><h3 id="2-解决办法"><a href="#2-解决办法" class="headerlink" title="2.解决办法"></a>2.解决办法</h3><blockquote><p>编辑docker-compose文件 添加 privileged: true<br> 重新运行 docker-compose up -d 即可</p></blockquote><p><img src="/images/blog/ops/b-1-2.png" alt="在这里插入图片描述"></p>]]></content>
-    
-    
-    <categories>
-      
-      <category>OPS</category>
-      
-    </categories>
-    
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>CentOS Liunx 7 下安装java jdk</title>
     <link href="/2022/12/linux/b003/"/>
     <url>/2022/12/linux/b003/</url>
@@ -337,6 +318,25 @@
     <categories>
       
       <category>linux</category>
+      
+    </categories>
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Docker docker-compose cp cannot create regular file ‘xxxxx‘ Permission denied</title>
+    <link href="/2022/12/ops/b002/"/>
+    <url>/2022/12/ops/b002/</url>
+    
+    <content type="html"><![CDATA[<h3 id="1-问题原因"><a href="#1-问题原因" class="headerlink" title="1.问题原因"></a>1.问题原因</h3><blockquote><p>需要创建和本机的映射路径,导致权限不足</p></blockquote><p><img src="/images/blog/ops/b-1-1.png" alt="在这里插入图片描述"></p><h3 id="2-解决办法"><a href="#2-解决办法" class="headerlink" title="2.解决办法"></a>2.解决办法</h3><blockquote><p>编辑docker-compose文件 添加 privileged: true<br> 重新运行 docker-compose up -d 即可</p></blockquote><p><img src="/images/blog/ops/b-1-2.png" alt="在这里插入图片描述"></p>]]></content>
+    
+    
+    <categories>
+      
+      <category>OPS</category>
       
     </categories>
     

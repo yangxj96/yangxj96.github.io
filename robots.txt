@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://yangxj96.github.io/sitemap.xml
+Sitemap: https://blog.devops00.com/sitemap.xml
